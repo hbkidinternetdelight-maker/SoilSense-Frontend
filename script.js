@@ -1,4 +1,4 @@
-const API_BASE = "https://soil-sense.onrender.com";
+const API_BASE = "https://soil-sense.onrender.com/";
 
 let currentLanguage = "en";
 let currentSensorData = {
@@ -1390,12 +1390,25 @@ async function loadWeather(){
     try{
         if(!selectedLocationData?.confirmed){if(!(await ensureLocationConfirmed()))throw new Error("Please select a confirmed location");}
         const {latitude,longitude}=selectedLocationData;
-        // Always request weather for the EXACT confirmed coordinates.
-        // Cache-busting prevents an old location response being reused by the browser.
-        const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,rain,precipitation,wind_speed_10m,weather_code&hourly=precipitation_probability,rain,precipitation&forecast_days=2&timezone=auto&_=${Date.now()}`;
+        // Use the exact confirmed coordinates and Open-Meteo's current + daily values.
+        // The rain percentage shown in the dashboard is today's precipitation probability maximum,
+        // rather than an arbitrary maximum across the next 24 hourly values.
+        const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,rain,precipitation,wind_speed_10m,weather_code&daily=precipitation_probability_max,precipitation_sum,weather_code&forecast_days=2&timezone=auto&_=${Date.now()}`;
         const r=await fetch(url);if(!r.ok)throw new Error("Weather API failed");const d=await r.json();
-        const h=d.hourly||{},times=h.time||[],probs=h.precipitation_probability||[],now=Date.now(),next24=probs.filter((_,i)=>{const t=new Date(times[i]).getTime();return !Number.isNaN(t)&&t>=now&&t<=now+86400000;});
-        const weather={temperature:d.current?.temperature_2m,humidity:d.current?.relative_humidity_2m,apparent_temperature:d.current?.apparent_temperature,rain:d.current?.rain,precipitation:d.current?.precipitation,wind_speed:d.current?.wind_speed_10m,weather_code:d.current?.weather_code,rain_probability:next24.length?Math.max(...next24):0};
+        const daily=d.daily||{};
+        const rainProbability=Number.isFinite(Number(daily.precipitation_probability_max?.[0]))
+            ? Number(daily.precipitation_probability_max[0]) : 0;
+        const weather={
+            temperature:d.current?.temperature_2m,
+            humidity:d.current?.relative_humidity_2m,
+            apparent_temperature:d.current?.apparent_temperature,
+            rain:d.current?.rain,
+            precipitation:d.current?.precipitation,
+            wind_speed:d.current?.wind_speed_10m,
+            weather_code:d.current?.weather_code,
+            rain_probability:rainProbability,
+            daily_rainfall:daily.precipitation_sum?.[0] ?? 0
+        };
         window.soilSenseWeather=weather;updateWeatherUI(weather);return weather;
     }catch(e){console.error("Weather connection error:",e);return null;}
 }
