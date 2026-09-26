@@ -1,4 +1,4 @@
-const API_BASE = "https://soil-sense.onrender.com/";
+const API_BASE = "https://soil-sense.onrender.com";
 
 let currentLanguage = "en";
 let currentSensorData = {
@@ -1305,17 +1305,8 @@ async function updateLiveSensor() {
         }
 
 
-        const advisorHumidity =
-            document.getElementById(
-                "advisorHumidity"
-            );
-
-        if (advisorHumidity) {
-            advisorHumidity.textContent =
-                `${currentSensorData.humidity}%`;
-        }
-
-
+        // Advisor humidity is WEATHER humidity and is updated by loadWeather().
+        // Do not overwrite it with the sensor's humidity reading.
         updateMoistureUI();
 
     } catch (error) {
@@ -1388,17 +1379,27 @@ function updateMoistureUI() {
 
 async function loadWeather(){
     try{
-        if(!selectedLocationData?.confirmed){if(!(await ensureLocationConfirmed()))throw new Error("Please select a confirmed location");}
+        if(!selectedLocationData?.confirmed){
+            if(!(await ensureLocationConfirmed())) throw new Error("Please select a confirmed location");
+        }
+
         const {latitude,longitude}=selectedLocationData;
-        // Use the exact confirmed coordinates and Open-Meteo's current + daily values.
-        // The rain percentage shown in the dashboard is today's precipitation probability maximum,
-        // rather than an arbitrary maximum across the next 24 hourly values.
-        const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,rain,precipitation,wind_speed_10m,weather_code&daily=precipitation_probability_max,precipitation_sum,weather_code&forecast_days=2&timezone=auto&_=${Date.now()}`;
-        const r=await fetch(url);if(!r.ok)throw new Error("Weather API failed");const d=await r.json();
+        // Weather is requested from the EXACT coordinates selected by the farmer.
+        // Open-Meteo's Best Match uses the most suitable available global/local model.
+        const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,rain,precipitation,wind_speed_10m,weather_code&hourly=precipitation_probability,rain,precipitation&daily=precipitation_probability_max,rain_sum,precipitation_sum&forecast_days=2&timezone=auto&_=${Date.now()}`;
+        const r=await fetch(url);
+        if(!r.ok) throw new Error("Weather API failed");
+        const d=await r.json();
+
+        // Use the API's daily precipitation-probability maximum for TODAY.
+        // This is a clearer "chance of rain today" value than taking the maximum
+        // of an arbitrary rolling 24-hour slice.
         const daily=d.daily||{};
-        const rainProbability=Number.isFinite(Number(daily.precipitation_probability_max?.[0]))
-            ? Number(daily.precipitation_probability_max[0]) : 0;
+        const dailyRain=daily.precipitation_probability_max?.[0];
+
         const weather={
+            latitude:Number(latitude),
+            longitude:Number(longitude),
             temperature:d.current?.temperature_2m,
             humidity:d.current?.relative_humidity_2m,
             apparent_temperature:d.current?.apparent_temperature,
@@ -1406,11 +1407,16 @@ async function loadWeather(){
             precipitation:d.current?.precipitation,
             wind_speed:d.current?.wind_speed_10m,
             weather_code:d.current?.weather_code,
-            rain_probability:rainProbability,
-            daily_rainfall:daily.precipitation_sum?.[0] ?? 0
+            rain_probability:dailyRain!==undefined?Number(dailyRain):0
         };
-        window.soilSenseWeather=weather;updateWeatherUI(weather);return weather;
-    }catch(e){console.error("Weather connection error:",e);return null;}
+
+        window.soilSenseWeather=weather;
+        updateWeatherUI(weather);
+        return weather;
+    }catch(e){
+        console.error("Weather connection error:",e);
+        return null;
+    }
 }
 function updateWeatherUI(w){
     const t=w.temperature,h=w.humidity,r=w.rain_probability;
