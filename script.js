@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Soil Moisture Monitoring System</title>
+<link href="style.css" rel="stylesheet"/>
+
+</head>
+<body>
+<!-- LANGUAGE PAGE -->
+<section class="language-page" id="languagePage">
+<div class="language-card">
+<div class="leaf-logo">
+            🌱
+        </div>
+<div class="eyebrow">
+            SMART AGRICULTURE
+        </div>
+<h1>
+            Soil Moisture<br/>
+            Monitoring System
+        </h1>
+<p>
+            Healthy soil. Happier farmers.<br/>
+            Smarter decisions.
+        </p>
+<h3 id="languageTitle">
+            Select Your Language
+        </h3>
+<div class="langs">
+<button onclick="selectLanguage('en')">
+                🇬🇧 English
+            </button>
+<button onclick="selectLanguage('hi')">
+                🇮🇳 हिंदी
+            </button>
+<button onclick="selectLanguage('mr')">
+                🇮🇳 मराठी
+            </button>
+</div>
+<small>
+            Smart farming • Simple decisions • Better growth
+        </small>
+</div>
+</section>
+<!-- FARM SETUP -->
+<section class="setup-page hidden" id="setupPage">
+<div class="setup-shell">
+<div class="setup-visual">
+<div class="sun">
+                ☀️
+            </div>
+<div class="mountain mountain1"></div>
+<div class="mountain mountain2"></div>
+<div class="farm-land">
+<div class="crop-row">
+                    🌾 🌾 🌾 🌾 🌾 🌾 🌾
+                </div>
+<div class="crop-row">
+                    🌱 🌱 🌱 🌱 🌱 🌱 🌱
+                </div>
+<div class="crop-row">
+                    🌾 🌾 🌾 🌾 🌾 🌾 🌾
+                </div>
+</div>
+<div class="farmer-figure">
+                👨‍🌾
+            </div>
+<div class="visual-text">
+<div class="brand-mark">
+                    🌿 SoilSense
+                </div>
+<h1>
+                    Your Farm<br/>
+                    Your Future
+                </h1>
+<p>
+                    Smart farming for a greener tomorrow.
+                </p>
+</div>
+</div>
+<div class="setup-form">
+<div class="steps">
+<b>1</b>
+<span></span>
+<i>2</i>
+<span></span>
+<i>3</i>
+</div>
+<div class="eyebrow">
+                FARM SETUP
+            </div>
+<h2 id="setupTitle">
+                Tell us about your farm
+            </h2>
+<p id="setupDescription">
+                A few simple details help us provide useful crop insights.
+            </p>
+<label id="locationLabel">
+                📍 Farm Location
+            </label>
+<div class="location-search-wrap">
+<div class="location-row">
+<span>⌖</span>
+<input id="location" placeholder="Search village, town or city..." type="text" autocomplete="off"/>
+</div>
+<div id="locationSuggestions" class="location-suggestions hidden"></div>
+<div id="locationConfirmed" class="location-confirmed hidden"></div>
+</div>
+<button class="detect" onclick="detectLocation()">
+                ◎ Auto-detect my location
+            </button>
+<label id="cropLabel">
+                🌾 Select Crop
+            </label>
+<select id="crop">
+<option value="tomato">Tomato</option>
+<option value="wheat">Wheat</option>
+<option value="rice">Rice</option>
+<option value="maize">Maize</option>
+<option value="sugarcane">Sugarcane</option>
+<option value="onion">Onion</option>
+<option value="potato">Potato</option>
+<option value="cotton">Cotton</option>
+<option value="soybean">Soybean</option>
+<option value="chickpea">Chickpea</option>
+<option value="groundnut">Groundnut</option>
+<option value="mustard">Mustard</option>
+<option value="chilli">Chilli</option>
+<option value="banana">Banana</option>
+<option value="pigeon_pea">Pigeon Pea / Tur</option>
+<option value="other">Other / My crop is not listed</option>
+</select>
+<label id="stageLabel">
+                🌱 Crop Stage
+            </label>
+<select id="stage">
+<option value="seedling">Seedling</option>
+<option selected="" value="vegetative">Vegetative</option>
+<option value="flowering">Flowering</option>
+<option value="fruiting">Fruiting</option>
+</select>
+<button class="continue" id="continueBtn" onclick="openDashboard()">
+                Continue →
+            </button>
+</div>
+</div>
+</section>
+<!-- DASHBOARD -->
+<div class="hidden" id="dashboardPage">
+<header class="topbar">
+<div class="brand">
+<div class="brand-icon">
+            🌱
+        </div>
+<div>
+<strong>
+                SoilSense
+            </strong>
+<small>
+                Smart Soil Monitoring
+            </small>
+</div>
+</div>
+<nav>
+<button class="active">
+            Dashboard
+        </button>
+<button onclick="showFeature('live')">
+            Live Monitor
+        </button>
+<button onclick="showFeature('advisor')">
+            Crop Advisor
+        </button>
+<button onclick="showFeature('areas')">
+            Field Analysis
+        </button>
+<button>
+            Weather
+        </button>
+<button>
+            Tips
+        </button>
+</nav>
+<div class="top-right">
+<span>
+            🔔
+        </span>
+<span id="navLocation">
+            📍 Pune, Maharashtra
+        </span>
+<span>
+            👤 Farmer
+        </span>
+</div>
+</header>
+<!-- HERO -->
+<section class="dashboard-hero">
+<div class="hero-background">
+<div class="sun-big">
+            ☀️
+        </div>
+<div class="cloud cloud1">
+            ☁️
+        </div>
+<div class="cloud cloud2">
+            ☁️
+        </div>
+<div class="hero-hills"></div>
+<div class="hero-field">
+            🌾 🌾 🌾 🌾 🌾 🌾 🌾 🌾 🌾
+        </div>
+<div class="hero-farmer">
+            👨‍🌾
+        </div>
+</div>
+<div class="hero-shade"></div>
+<div class="hero-content">
+<span class="hero-tag">
+            🌿 SMART FARMING TECHNOLOGY
+        </span>
+<h1>
+            Namaste, Farmer!
+        </h1>
+<p id="heroSlogan">
+            Healthy soil. Happier farmers. Stronger India.
+        </p>
+<div class="chips">
+<span id="heroLocation">
+                📍 Pune, Maharashtra
+            </span>
+<span id="heroCrop">
+                🌾 Tomato
+            </span>
+<span id="heroStage">
+                🌱 Vegetative Stage
+            </span>
+</div>
+</div>
+<!-- WEATHER -->
+<div class="weather-box">
+<small>
+            Today's Weather
+        </small>
+<strong id="temperature">
+            32°C
+        </strong>
+<span id="weatherCondition">
+            ☀️ Partly Cloudy
+        </span>
+<div>
+<b id="humidity">
+                💧 58%
+            </b>
+<b id="rainChance">
+                🌧️ 20%
+            </b>
+</div>
+</div>
+</section>
+<!-- QUICK TIPS -->
+<section class="quick-bar">
+<div>
+<span>
+            💡
+        </span>
+<b>
+            Quick Tips for Today
+        </b>
+</div>
+<span class="tip good">
+        ✓ Irrigation not required today
+    </span>
+<span class="tip">
+        💧 Good moisture level
+    </span>
+<span class="tip warn">
+        ⚠ Monitor dry areas
+    </span>
+<span class="tip">
+        🌧 Rain expected in 2 days
+    </span>
+</section>
+<!-- MAIN -->
+<main class="dashboard-main">
+<div class="section-head">
+<div>
+<div class="eyebrow">
+                YOUR FIELD AT A GLANCE
+            </div>
+<h2>
+                Smart Monitoring
+            </h2>
+</div>
+<p>
+            Choose a feature to explore your field.
+        </p>
+</div>
+<!-- THREE FEATURES -->
+<section class="feature-grid">
+<!-- FEATURE 1 -->
+<article class="feature-card" onclick="showFeature('advisor')">
+<div class="card-top green">
+<span class="card-icon">
+                    🌿
+                </span>
+<span class="arrow">
+                    →
+                </span>
+</div>
+<div class="card-body">
+<div class="visual-card farmer-card">
+<div class="farmer-icon">
+                        👨‍🌾
+                    </div>
+<span>
+                        Indian Farmer
+                    </span>
+</div>
+<div>
+<div class="eyebrow">
+                        AI CROP INSIGHT
+                    </div>
+<h3>
+                        Smart Crop Advisor
+                    </h3>
+<p>
+                        Personalized irrigation guidance using
+                        soil, weather and crop stage.
+                    </p>
+<div class="mini-list">
+<span>
+                            ✓ Weather-based advice
+                        </span>
+<span>
+                            ✓ Crop-stage insights
+                        </span>
+<span>
+                            ✓ Farmer-friendly recommendations
+                        </span>
+</div>
+<button>
+                        Explore Advisor →
+                    </button>
+</div>
+</div>
+</article>
+<!-- FEATURE 2 -->
+<article class="feature-card" onclick="showFeature('live')">
+<div class="card-top blue">
+<span class="card-icon">
+                    💧
+                </span>
+<span class="arrow">
+                    →
+                </span>
+</div>
+<div class="card-body">
+<div class="visual-card sensor-card">
+<div class="sensor-icon">
+                        💧
+                    </div>
+<div class="soil">
+                        •••••••
+                    </div>
+<span>
+                        Soil Sensor
+                    </span>
+</div>
+<div class="live-reading">
+<div class="eyebrow">
+                        REAL-TIME MONITORING
+                    </div>
+<h3>
+                        Live Soil Moisture
+                    </h3>
+<div class="big-number" id="liveMoisture">
+                        --%
+                    </div>
+<span class="status">
+                        ● Live
+                    </span>
+<p>
+                        Last updated: just now
+                    </p>
+<div class="mini-data">
+<span id="liveTemperature">
+                            🌡 --°C
+                        </span>
+</div>
+</div>
+</div>
+</article>
+<!-- FEATURE 3 -->
+<article class="feature-card" onclick="showFeature('areas')">
+<div class="card-top gold">
+<span class="card-icon">
+                    🗺️
+                </span>
+<span class="arrow">
+                    →
+                </span>
+</div>
+<div class="card-body">
+<div class="visual-card field-card">
+<div>
+                        🌾
+                    </div>
+<div class="field-lines">
+                        ─────
+                        ─────
+                        ─────
+                    </div>
+<span>
+                        Farm Field
+                    </span>
+</div>
+<div>
+<div class="eyebrow">
+                        FIELD ANALYSIS
+                    </div>
+<h3>
+                        Multiple Area Analysis
+                    </h3>
+<p>
+                        Compare moisture across different
+                        parts of your field.
+                    </p>
+<div class="area-summary">
+<strong id="dashboardAreaAverage">
+                            0%
+                        </strong>
+<span>
+                            Field Average
+                        </span>
+<b id="dashboardAreaStatus">
+                            No analysis yet
+                        </b>
+</div>
+<button>
+                        View Field Analysis →
+                    </button>
+</div>
+</div>
+</article>
+</section>
+<!-- FEATURE DETAILS -->
+<section class="detail-panel hidden" id="featurePanel">
+<button class="close" onclick="closeFeature()">
+            ×
+        </button>
+<!-- ADVISOR -->
+<div class="detail hidden" id="advisorPanel">
+<div class="eyebrow">
+                SMART CROP ADVISOR
+            </div>
+<h2>
+                Today's Recommendation
+            </h2>
+<div class="recommendation">
+<span>
+                    💧
+                </span>
+<div>
+<b id="advisorRecommendation">
+                        🟢 Checking recommendation...
+                    </b>
+<p id="advisorDescription">
+                        Weather and soil conditions are being considered.
+                    </p>
+</div>
+</div>
+<div class="advisor-status-row">
+
+                <span id="advisorSensorStatus" class="sensor-status sensor-offline">
+                    🔴 Sensor not connected
+                </span>
+
+                <span id="advisorUpdatedAt">
+                    Waiting for sensor...
+                </span>
+
+            </div>
+
+            <div class="detail-stats">
+
+                <div>
+                    🌡 Temperature
+                    <strong id="advisorTemperature">--°C</strong>
+                </div>
+
+                <div>
+                    💧 Moisture
+                    <strong id="advisorMoisture">--%</strong>
+                </div>
+
+                <div>
+                    💨 Humidity
+                    <strong id="advisorHumidity">--%</strong>
+                </div>
+
+                <div>
+                    🌧 Rain chance
+                    <strong id="advisorRain">--%</strong>
+                </div>
+
+            </div>
+
+            <div class="irrigation-time-box" id="irrigationTimeBox">
+                <span>💦</span>
+                <div>
+                    <small>APPROX. IRRIGATION TIME</small>
+                    <strong id="irrigationTime">Waiting for sensor reading...</strong>
+                    <p id="irrigationTimeNote">
+                        Approximate dashboard estimate based on current soil moisture, crop stage and rain chance.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LIVE MOISTURE -->
+<div class="detail hidden" id="livePanel">
+<div class="eyebrow">
+                REAL-TIME SENSOR
+            </div>
+<h2>
+                Live Soil Moisture
+            </h2>
+<div class="live-detail">
+<div class="gauge">
+<strong id="largeMoisture">
+                        --%
+                    </strong>
+<small>
+                        Soil Moisture
+                    </small>
+</div>
+<div>
+<h3>
+                        Current condition
+                    </h3>
+<p id="liveMessage">
+                        🟢 Moisture level is optimal.
+                    </p>
+<div class="progress">
+<span id="moistureBar" style="width:0%"></span>
+</div>
+<small id="lastUpdate">
+                        Updated just now
+                    </small>
+</div>
+</div>
+</div>
+<!-- DYNAMIC MULTIPLE AREA -->
+<div class="detail hidden" id="areasPanel">
+<div class="eyebrow">FIELD ANALYSIS</div>
+<h2>Multiple Area Moisture</h2>
+<p class="area-description">
+                Select an area, detect its current soil moisture, save it, and move to the next area.
+            </p>
+<div class="area-input-section">
+<label for="areaCount">🌾 How many areas are you monitoring?</label>
+<select id="areaCount" onchange="setupAreaMonitoring()">
+<option value="1">1 Area</option>
+<option value="2">2 Areas</option>
+<option value="3">3 Areas</option>
+<option value="4">4 Areas</option>
+<option value="5">5 Areas</option>
+<option selected="" value="6">6 Areas</option>
+<option value="7">7 Areas</option>
+<option value="8">8 Areas</option>
+<option value="9">9 Areas</option>
+<option value="10">10 Areas</option>
+</select>
+</div>
+<div class="area-monitor-card" id="areaMonitorCard">
+<div class="area-progress">
+<span id="areaProgressText">Area 1 of 6</span>
+<span id="areaProgressPercent">0%</span>
+</div>
+<div class="area-progress-bar">
+<span id="areaProgressBar"></span>
+</div>
+<div class="current-area-box">
+<div class="current-area-icon">🌾</div>
+<div>
+<small>CURRENT AREA</small>
+<h3 id="currentAreaName">Area 1</h3>
+</div>
+</div>
+<div class="detected-moisture" id="detectedMoisture">
+                    --%
+                </div>
+<p id="detectStatus">Place the sensor in Area 1 and detect the moisture.</p>
+<button class="detect-moisture-btn" onclick="detectAreaMoisture()">
+                    💧 Detect Moisture
+                </button>
+<button class="continue next-area-btn hidden" id="nextAreaBtn" onclick="goToNextArea()">
+                    Save &amp; Next Area →
+                </button>
+</div>
+<div class="saved-areas" id="savedAreas"></div>
+<button class="continue hidden" id="finishFieldBtn" onclick="finishFieldAnalysis()" style="margin-top:20px;">
+                Analyze Complete Field →
+            </button>
+<div id="fieldResult" style="margin-top:25px;">
+<div class="area-summary">
+<strong id="areaAverage">0%</strong>
+<span>Field Average</span>
+<b id="areaStatus">Detect areas to analyze</b>
+</div>
+<div id="areaStats" style="margin-top:20px;"></div>
+<div class="field-area-cards" id="fieldAreaCards"></div><div class="recommendation" id="areaRecommendation" style="margin-top:20px;">
+<span>🌱</span>
+<div>
+<b>Field analysis ready</b>
+<p>Detect moisture area by area.</p>
+</div>
+</div><button class="continue" id="newAnalysisButton" onclick="startNewFieldAnalysis()">Start New Field Analysis</button>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer>
+<div class="footer-brand">
+<span>
+            🌱
+        </span>
+<div>
+<strong>
+                SoilSense
+            </strong>
+<small>
+                Smart Farming for a Sustainable India
+            </small>
+</div>
+</div>
+<p>
+        "Healthy soil. Happier farmers. Stronger India."
+    </p>
+<small>
+        © 2026 Soil Moisture Monitoring System
+        • Made for Indian Farmers 🇮🇳
+    </small>
+</footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
